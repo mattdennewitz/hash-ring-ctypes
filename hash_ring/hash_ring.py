@@ -39,8 +39,22 @@ dll.hash_ring_find_node.restype = ctypes.POINTER(hash_ring_node_t)
 
 
 class HashRing(object):
+    """Hash ring abstraction
+    """
+
     def __init__(self, replicas=5, nodes=None, enc=HASH_FUNCTION_MD5,
                  fail_silently=False):
+        """Creates a new ``HashRing`` with ``replica`` replicas available
+        to each node.
+
+        :param replicas: Number of replicas of each node in the ring. Default: 5.
+        :param nodes: This ring's nodes.
+        :param enc: Hashing algorithm, one of ``hash_ring.HASH_FUNCTION_MD5``
+                    or ``hash_ring.HASH_FUNCTION_SHA1``.
+                    Default: ``hash_ring.HASH_FUNCTION_MD5``.
+        :param fail_silently: Keep quiet about errors? Default: no.
+        """
+
         if not enc in (HASH_FUNCTION_MD5, HASH_FUNCTION_SHA1):
             raise ValueError('"enc" arg must be one of '
                              'HASH_FUNCTION_MD5 or HASH_FUNCTION_SHA1')
@@ -77,11 +91,13 @@ class HashRing(object):
 
         return HASH_RING_OK
 
-    def add_node(self, node, fail_silently=False):
+    def add_node(self, node):
         """Adds a node to the ring.
 
         Nodes are unique. Attempting to add a non-unique node
-        will result in a `ValueError`.
+        will result in a ``ValueError``.
+
+        :param node: Node name (string). Required.
         """
 
         if not isinstance(node, basestring):
@@ -97,7 +113,9 @@ class HashRing(object):
         """Removes a node from the ring.
 
         Attempts to remove a node not in the ring
-        will result in a `ValueError`.
+        will result in a ``ValueError``.
+
+        :param node: Node name (string). Required.
         """
 
         if not isinstance(node, basestring):
@@ -109,10 +127,12 @@ class HashRing(object):
             ret, ValueError, 'Could not remove node. Was node not in ring?')
 
     def lookup(self, value):
-        """Returns node name that corresponds to given `value`.
+        """Returns node name that corresponds to given ``value``.
 
         If the ring is empty and the user has suppressed errors,
-        this function returns `None`.
+        this function returns ``None``.
+
+        :param value: Value used to look up a node. Required.
         """
 
         if not isinstance(value, basestring):
