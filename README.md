@@ -2,6 +2,8 @@
 
 Fast ctypes-based wrapper around [libhashring](https://github.com/chrismoos/hash-ring/).
 
+What is a hash ring? Check [this](http://www.martinbroadhurst.com/Consistent-Hash-Ring.html) out.
+
 ## Installation
 
 For now, clone from this repo:
